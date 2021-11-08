@@ -1,18 +1,21 @@
 package com.charles.service;
 
+import com.charles.dto.RoleDto;
 import com.charles.entity.Role;
 
 import java.util.List;
 
 public interface RoleService {
-    List<Role> findAllByPage();
+    List<Role> list();
 
-    void setPermission(Role role);
+    RoleDto findById(Integer id);
 
-    void save(Role role);
+    RoleDto update(Role role);
+
+    void setPermission(Integer rodeId, String rids);
+
+    RoleDto save(Role role);
 
     void delete(Integer id);
-
-
 
 }

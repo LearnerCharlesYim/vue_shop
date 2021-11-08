@@ -11,10 +11,10 @@ public class SysUser extends BaseEntity{
     private String username;
     private String password;
     private String email;
-    private Boolean state;
+    private Boolean state = true;
     private String phone;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Role role;
 
@@ -64,5 +64,21 @@ public class SysUser extends BaseEntity{
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "id=" + id +
+                ", createdTime=" + createdTime +
+                ", modifiedTime=" + modifiedTime +
+                ", deleted=" + deleted +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", state=" + state +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }

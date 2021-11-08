@@ -1,5 +1,6 @@
-package com.charles.dto;
+package com.charles.mapper;
 
+import com.charles.dto.MenuDto;
 import com.charles.entity.Permission;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

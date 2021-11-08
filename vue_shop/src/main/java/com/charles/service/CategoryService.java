@@ -1,14 +1,20 @@
 package com.charles.service;
 
+import com.charles.dto.CategoryDto;
+import com.charles.dto.CategoryListDto;
 import com.charles.entity.Category;
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> findAllByPage();
+    CategoryListDto findAllByPage(int pageNum,int pageSize);
 
-    void save(Category category);
+    CategoryDto save(Category category);
+
+    CategoryDto update(Category category);
 
     void delete(Integer id);
+
+    CategoryDto findOne(int id);
 
 }

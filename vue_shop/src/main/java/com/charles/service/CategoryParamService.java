@@ -1,15 +1,18 @@
 package com.charles.service;
 
+import com.charles.dto.CategoryParamDto;
 import com.charles.entity.CategoryParam;
 
 import java.util.List;
 
 public interface CategoryParamService {
-    List<CategoryParam> findByCateId(Integer id);
+    CategoryParamDto save(CategoryParam categoryParam, Integer cid);
 
-    void save(CategoryParam categoryParam);
+    void delete(Integer cid);
 
-    void delete(Integer id);
+    List<CategoryParamDto> findByCondition(CategoryParam categoryParam,Integer cid);
 
+    CategoryParamDto findOne(Integer paramId);
 
+    CategoryParamDto update(CategoryParam categoryParam);
 }

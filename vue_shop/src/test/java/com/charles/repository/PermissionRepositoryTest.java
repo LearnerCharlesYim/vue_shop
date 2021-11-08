@@ -1,30 +1,17 @@
 package com.charles.repository;
 
 import com.charles.dto.MenuDto;
-import com.charles.dto.MenuMapper;
+import com.charles.mapper.MenuMapper;
 import com.charles.entity.Permission;
 import com.charles.entity.QPermission;
-import com.charles.entity.QSysUser;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.QBean;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 
 import javax.annotation.Resource;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @SpringBootTest

@@ -30,6 +30,13 @@ public class JsonResult<E> {
         this.data = data;
     }
 
+    public JsonResult(Integer state, String message, E data) {
+        super();
+        this.state = state;
+        this.message = message;
+        this.data = data;
+    }
+
     public Integer getState() {
         return state;
     }

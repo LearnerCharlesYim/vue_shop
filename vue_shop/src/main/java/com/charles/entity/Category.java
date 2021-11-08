@@ -1,8 +1,5 @@
 package com.charles.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,7 +18,7 @@ public class Category extends BaseEntity{
     @OneToMany(mappedBy = "parent")
     private List<Category> children;
 
-    @OneToMany(mappedBy = "category")
+    @ManyToMany(mappedBy = "categories")
     private List<Goods> goodsList;
 
     @OneToMany(mappedBy = "cate")

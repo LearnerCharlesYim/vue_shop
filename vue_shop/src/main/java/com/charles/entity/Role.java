@@ -1,7 +1,6 @@
 package com.charles.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +19,10 @@ public class Role extends BaseEntity {
             ,inverseJoinColumns = @JoinColumn(name="permission_id",referencedColumnName = "id"))
     private List<Permission> permissions;
 
-    @OneToMany(mappedBy = "role")
+    //@OneToMany(mappedBy = "role",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="role_id")
+    @JsonIgnore
     private List<SysUser> users;
 
     @Override

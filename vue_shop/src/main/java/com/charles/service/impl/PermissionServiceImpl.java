@@ -1,7 +1,9 @@
 package com.charles.service.impl;
 
+import com.charles.dto.PermissionLDto;
 import com.charles.dto.PermissionListDto;
 import com.charles.entity.Permission;
+import com.charles.mapper.PermissionMapper;
 import com.charles.repository.PermissionRepository;
 import com.charles.service.PermissionService;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,6 +43,7 @@ public class PermissionServiceImpl implements PermissionService {
         PermissionListDto permissionListDto = new PermissionListDto();
         permissionListDto.setPageNum(pageNum);
         permissionListDto.setPageSize(pageSize);
+        permissionListDto.setTotalPage(page.getTotalPages());
         permissionListDto.setPermissions(permissions);
 
         return permissionListDto;
@@ -55,5 +59,16 @@ public class PermissionServiceImpl implements PermissionService {
             }
         }
         return permissions;
+    }
+
+    @Override
+    public List<PermissionLDto> getPermissionList() {
+        List<Permission> permissions = permissionRepository.findByLevelOrderByCreatedTimeDesc(1);
+        List<PermissionLDto> list = new ArrayList<>();
+        for (Permission permission : permissions) {
+            PermissionLDto permissionLDto = PermissionMapper.INSTANCES.toPermissionDto(permission);
+            list.add(permissionLDto);
+        }
+        return list;
     }
 }
