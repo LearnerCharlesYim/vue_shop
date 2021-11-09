@@ -12,6 +12,7 @@ public interface MenuMapper {
     MenuMapper INSTANCES = Mappers.getMapper(MenuMapper.class);
 
     @Mappings({
+            @Mapping(source = "id", target = "id"),
             @Mapping(source = "authName", target = "authName"),
             @Mapping(source = "path", target = "path"),
             @Mapping(source = "priority", target = "priority"),

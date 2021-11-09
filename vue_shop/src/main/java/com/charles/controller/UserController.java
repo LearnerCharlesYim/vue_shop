@@ -6,6 +6,7 @@ import com.charles.entity.SysUser;
 import com.charles.service.SysUserService;
 import com.charles.util.JsonResult;
 import com.charles.util.State;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,7 +47,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public JsonResult<UserDto> update(@PathVariable(value = "id") Integer id,SysUser user){
+    public JsonResult<UserDto> update(@PathVariable(value = "id") Integer id, SysUser user,String email,String phone){
+        System.out.println(user);
         UserDto userDto = sysUserService.update(user);
         return new JsonResult<>(State.OK,userDto);
     }

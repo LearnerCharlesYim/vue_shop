@@ -44,6 +44,7 @@ public class PermissionServiceImpl implements PermissionService {
         permissionListDto.setPageNum(pageNum);
         permissionListDto.setPageSize(pageSize);
         permissionListDto.setTotalPage(page.getTotalPages());
+        permissionListDto.setTotalNum(page.getTotalElements());
         permissionListDto.setPermissions(permissions);
 
         return permissionListDto;

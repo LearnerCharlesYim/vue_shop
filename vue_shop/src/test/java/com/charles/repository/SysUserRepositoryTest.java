@@ -8,9 +8,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.Arrays;
 
 @SpringBootTest
@@ -22,18 +26,34 @@ public class SysUserRepositoryTest {
     @Resource
     private JPAQueryFactory jpaQueryFactory;
 
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Test
     public void saveTest(){
-        SysUser user = new SysUser();
-        user.setId(-1);
-        user.setEmail("admin3@gmail.com");
-        user.setUsername("admin3");
-        user.setPhone("18888888888");
-        user.setPassword("111111");
-        user.setState(true);
-        user.setRole(roleRepository.getOne(3));
-        SysUser sysUser = sysUserRepository.save(user);
-        System.out.println(sysUser);
+        for (int i = 0; i < 60; i++) {
+            SysUser user = new SysUser();
+            user.setEmail("admin3"+i+"@gmail.com");
+            user.setPassword(bCryptPasswordEncoder.encode("111111"));
+            user.setPhone("18888888888");
+            user.setState(true);
+            user.setUsername("用户"+i);
+            sysUserRepository.save(user);
+        }
+
+    }
+
+    @Test
+    @Transactional
+    @Modifying
+    @Rollback(value = false)
+    public void test222(){
+        QSysUser u = QSysUser.sysUser;
+        long rows = jpaQueryFactory.update(u)
+                .set(u.password, bCryptPasswordEncoder.encode("111111"))
+                .where(u.id.eq(5))
+                .execute();
+        System.out.println(rows);
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.charles.service.impl;
 
 import com.charles.dto.UserDto;
 import com.charles.dto.UserListDto;
+import com.charles.entity.Permission;
 import com.charles.mapper.UserMapper;
 import com.charles.entity.QSysUser;
 import com.charles.entity.Role;
@@ -13,6 +14,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,6 +34,9 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Resource
     private RoleRepository roleRepository;
+
+    @Resource
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserListDto findByConditionAndPage(SysUser sysUser,Integer pageNum, Integer pageSize) {
@@ -63,11 +68,14 @@ public class SysUserServiceImpl implements SysUserService {
         userListDto.setTotalPage(
                 (int) (totalCount % pageSize == 0 ? (totalCount / pageSize) :(totalCount / pageSize + 1 ))
         );
+        userListDto.setTotalNum(totalCount);
         return userListDto;
     }
 
     @Override
     public UserDto save(SysUser sysUser) {
+        //加密
+        sysUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getPassword()));
         SysUser user = sysUserRepository.save(sysUser);
         return UserMapper.INSTANCES.toUserDto(user);
     }
@@ -76,6 +84,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional
     @Modifying
     public UserDto update(SysUser sysUser) {
+        if(StringUtils.isEmpty(sysUser.getEmail()) && StringUtils.isEmpty(sysUser.getPhone())){
+            SysUser one = sysUserRepository.getOne(sysUser.getId());
+            return UserMapper.INSTANCES.toUserDto(one);
+        }
         QSysUser user = QSysUser.sysUser;
         JPAUpdateClause update = jpaQueryFactory.update(user);
         if(!StringUtils.isEmpty(sysUser.getEmail())){
@@ -117,5 +129,19 @@ public class SysUserServiceImpl implements SysUserService {
     public UserDto findOneById(Integer id) {
         SysUser sysUser = sysUserRepository.getOne(id);
         return UserMapper.INSTANCES.toUserDto(sysUser);
+    }
+
+    @Override
+    public SysUser findByUsername(String username) {
+        return sysUserRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<Permission> getPermissionList(SysUser sysUser) {
+        Role role = sysUser.getRole();
+        if(role == null){
+            return null;
+        }
+        return role.getPermissions();
     }
 }

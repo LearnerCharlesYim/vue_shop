@@ -1,5 +1,6 @@
 package com.charles;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,11 @@ public class VueShopApplication {
     @Bean
     public JPAQueryFactory jpaQueryFactory(EntityManager entityManager){
         return new JPAQueryFactory(entityManager);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        return new ObjectMapper();
     }
 
 }

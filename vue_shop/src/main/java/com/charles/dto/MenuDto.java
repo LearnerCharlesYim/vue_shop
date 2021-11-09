@@ -6,10 +6,19 @@ import java.util.List;
 
 
 public class MenuDto {
+    private Integer id;
     private String authName;
     private String path;
     private Integer priority;
     private List<MenuDto> children;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getAuthName() {
         return authName;
