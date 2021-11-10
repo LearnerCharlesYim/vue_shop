@@ -1,11 +1,10 @@
 package com.charles.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Permission extends BaseEntity{
@@ -109,4 +108,13 @@ public class Permission extends BaseEntity{
 
                 '}';
     }
+    //重写equals方法 方便多对多关系 删除对象
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return Objects.equals(this.id, that.id);
+    }
+
 }

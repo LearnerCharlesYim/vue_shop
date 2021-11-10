@@ -64,7 +64,7 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public List<PermissionLDto> getPermissionList() {
-        List<Permission> permissions = permissionRepository.findByLevelOrderByCreatedTimeDesc(1);
+        List<Permission> permissions = permissionRepository.findAll(Sort.by(Sort.Direction.ASC,"level"));
         List<PermissionLDto> list = new ArrayList<>();
         for (Permission permission : permissions) {
             PermissionLDto permissionLDto = PermissionMapper.INSTANCES.toPermissionDto(permission);

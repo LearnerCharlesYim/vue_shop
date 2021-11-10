@@ -1,6 +1,7 @@
 package com.charles.controller;
 
 import com.charles.dto.RoleDto;
+import com.charles.entity.Permission;
 import com.charles.entity.Role;
 import com.charles.service.RoleService;
 import com.charles.util.JsonResult;
@@ -47,10 +48,17 @@ public class RoleController {
         return new JsonResult<>(State.OK);
     }
 
-    @PostMapping("{roleId}/rights")
+    @PostMapping("/{roleId}/rights")
     public JsonResult<Void> setPermission(@PathVariable(value = "roleId") Integer roleId,String rids){
         roleService.setPermission(roleId,rids);
         return new JsonResult<>(State.OK);
+    }
+
+    @DeleteMapping("/{roleId}/rights/{rightId}")
+    public JsonResult<List<Permission>> deletePermission(@PathVariable(value = "roleId") Integer roleId,
+                                                         @PathVariable(value = "rightId") Integer rightId){
+        Role role = roleService.deletePermissionById(roleId, rightId);
+        return new JsonResult<>(State.OK,role.getPermissions());
     }
 
 }

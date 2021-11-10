@@ -1,9 +1,6 @@
 package com.charles.config;
 
-import com.charles.security.CustomizeAuthenticationEntryPoint;
-import com.charles.security.CustomizeAuthenticationFailureHandler;
-import com.charles.security.CustomizeAuthenticationSuccessHandler;
-import com.charles.security.CustomizeLogoutSuccessHandler;
+import com.charles.security.*;
 import com.charles.util.jwt.JwtAuthenticationTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +39,9 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Resource
     private CustomizeLogoutSuccessHandler logoutSuccessHandler;
 
+    @Resource
+    private CustomizeSessionInformationExpiredStrategy customizeSessionInformationExpiredStrategy;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //配置认证方式等
@@ -71,11 +71,14 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .and()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //异常处理(权限拒绝、登录失效等)
-                .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint);//匿名用户访问无权限资源时的异常处理
+                .authenticationEntryPoint(authenticationEntryPoint) //匿名用户访问无权限资源时的异常处理
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .maximumSessions(1)
+                .expiredSessionStrategy(customizeSessionInformationExpiredStrategy);
 
         http.headers().frameOptions().sameOrigin()
                 .and().cors();
