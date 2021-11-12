@@ -47,6 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 grantedAuthorities.add(grantedAuthority);
             });
         }
+        System.out.println("用户名: " + sysUser.getUsername() + " \n拥有权限:" + grantedAuthorities);
         return new User(sysUser.getUsername()
                 , sysUser.getPassword()
                 , grantedAuthorities);

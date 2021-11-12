@@ -44,12 +44,18 @@ public class PermissionUtil {
                         i--;
                     }
                 } else {
+                    //递归，直到permission无children
                     distinct(permission.getChildren(), ids);
                 }
             }
         }
     }
 
+    /**
+     *
+     * @param  role 角色对象
+     * @return 返回角色所具有权限id数组
+     */
     public static List<Integer> getPermissionIds(Role role) {
         List<Integer> list = new ArrayList<>();
         role.getPermissions().forEach(permission -> {
@@ -59,6 +65,11 @@ public class PermissionUtil {
         return list;
     }
 
+    /**
+     * 封装角色权限
+     * @param role 角色对象
+     * @return 返回角色对象
+     */
     public static Role getRole(Role role) {
         List<Integer> ids = getPermissionIds(role);
         List<Permission> levelOnePermissions = getLevelOnePermissions(role);

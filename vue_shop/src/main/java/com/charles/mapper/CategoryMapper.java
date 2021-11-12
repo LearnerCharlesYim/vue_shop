@@ -16,7 +16,8 @@ public interface CategoryMapper {
             @Mapping(source = "name", target = "name"),
             @Mapping(source = "parentId", target = "parentId"),
             @Mapping(source = "level",target = "level"),
-            @Mapping(source = "children",target = "children")
+            @Mapping(source = "children",target = "children"),
+            @Mapping(source = "state",target = "state")
     })
     CategoryDto toCategoryDto(Category category);
 

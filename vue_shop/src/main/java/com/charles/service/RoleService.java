@@ -18,6 +18,5 @@ public interface RoleService {
 
     void delete(Integer id);
 
-
     Role deletePermissionById(Integer roleId, Integer rightId);
 }

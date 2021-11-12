@@ -43,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         categoryListDto.setTotalPage(
                 count % pageSize == 0 ? count / pageSize : (count / pageSize + 1)
         );
+        categoryListDto.setTotalNum(count.longValue());
         return categoryListDto;
     }
 

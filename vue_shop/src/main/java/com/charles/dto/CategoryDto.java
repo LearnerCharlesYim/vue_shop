@@ -7,6 +7,7 @@ public class CategoryDto {
     private String name;
     private Integer parentId;
     private Integer level;
+    private Boolean state;
     private List<CategoryDto> children;
 
     public Integer getId() {
@@ -47,5 +48,13 @@ public class CategoryDto {
 
     public void setChildren(List<CategoryDto> children) {
         this.children = children;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

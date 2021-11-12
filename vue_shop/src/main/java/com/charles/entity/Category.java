@@ -7,6 +7,7 @@ import java.util.List;
 public class Category extends BaseEntity{
     private String name;
     private Integer level;
+    private Boolean state;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="parent_id",insertable = false,updatable = false)
@@ -78,5 +79,13 @@ public class Category extends BaseEntity{
 
     public void setParams(List<CategoryParam> params) {
         this.params = params;
+    }
+
+    public Boolean getState() {
+        return state;
+    }
+
+    public void setState(Boolean state) {
+        this.state = state;
     }
 }

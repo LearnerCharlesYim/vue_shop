@@ -2,7 +2,6 @@ package com.charles.service.impl;
 
 import com.charles.dto.RoleDto;
 import com.charles.entity.Permission;
-import com.charles.entity.QPermission;
 import com.charles.entity.QRole;
 import com.charles.entity.Role;
 import com.charles.mapper.RoleMapper;
@@ -10,9 +9,6 @@ import com.charles.repository.PermissionRepository;
 import com.charles.repository.RoleRepository;
 import com.charles.service.RoleService;
 import com.charles.util.PermissionUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.domain.Sort;
@@ -24,9 +20,6 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.charles.util.PermissionUtil.getPermissionIds;
-import static com.charles.util.PermissionUtil.getRole;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -45,14 +38,9 @@ public class RoleServiceImpl implements RoleService {
         List<Role> roleList = roleRepository.findAll(Sort.by(Sort.Direction.DESC, "createdTime"));
         List<Role> roles = new ArrayList<>();
         roleList.forEach(role -> {
-            Role result = getRole(role);
+            Role result = PermissionUtil.getRole(role);
             roles.add(result);
-//            List<Integer> ids = getPermissionIds(role);
-//            List<Permission> levelOnePermissions = PermissionUtil.getLevelOnePermissions(role);
-//            PermissionUtil.distinct(levelOnePermissions,ids);
-//            role.setPermissions(levelOnePermissions);
         });
-
         return roles;
     }
 
