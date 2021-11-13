@@ -2,7 +2,7 @@ package com.charles.dto;
 
 public class LoginUserDto {
     private Integer id;
-    private Integer roleId;
+    private String roleName;
     private String username;
     private String phone;
     private String email;
@@ -16,16 +16,16 @@ public class LoginUserDto {
         this.id = id;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
     public String getUsername() {
         return username;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public void setUsername(String username) {

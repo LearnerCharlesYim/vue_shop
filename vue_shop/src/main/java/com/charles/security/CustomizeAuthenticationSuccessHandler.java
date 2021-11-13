@@ -8,6 +8,7 @@ import com.charles.util.JsonResult;
 import com.charles.util.State;
 import com.charles.util.jwt.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CustomizeAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -29,6 +31,9 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
     @Resource
     private ObjectMapper objectMapper;
 
+    @Resource
+    private RedisTemplate<String,String> redisTemplate;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -37,8 +42,11 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         //进而前台动态的控制菜单的显示等，具体根据自己的业务需求进行扩展
         //生成Jwt令牌
         String token = JwtUtils.generateToken(authentication);
+        // token存入redis
+        redisTemplate.boundValueOps("token").set(token);
+        // 设置过期时间
+        redisTemplate.expire("token",60 * 60 * 24 * 1000, TimeUnit.MILLISECONDS);
         JsonResult<LoginUserDto> result = new JsonResult<>();
-
         LoginUserDto loginUserDto = LoginUserMapper.INSTANCES.toLoginUserDto(sysUser);
         loginUserDto.setToken(token);
         result.setState(State.OK);
@@ -46,6 +54,5 @@ public class CustomizeAuthenticationSuccessHandler implements AuthenticationSucc
         result.setData(loginUserDto);
         httpServletResponse.setContentType("text/json;charset=utf-8");
         httpServletResponse.getWriter().write(objectMapper.writeValueAsString(result));
-
     }
 }

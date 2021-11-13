@@ -29,7 +29,7 @@ public class CustomizeSecurityMetadataSource implements FilterInvocationSecurity
         String requestMethod = request.getMethod();
         String requestURI = request.getRequestURI();
         String path = requestMethod + ":" + requestURI;
-        System.out.println("=======================================================");
+        //System.out.println("=======================================================");
         // System.out.println("访问: "+path);
         List<PermissionLDto> AllPermissions = permissionService.getPermissionList();
         List<String> permissions = new ArrayList<>();

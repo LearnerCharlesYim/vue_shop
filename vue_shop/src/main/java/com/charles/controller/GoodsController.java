@@ -1,20 +1,30 @@
 package com.charles.controller;
 
+import com.charles.controller.ex.FileEmptyException;
 import com.charles.dto.GoodsListDto;
+import com.charles.dto.GoodsUploadDto;
 import com.charles.entity.Goods;
 import com.charles.entity.GoodsAttrs;
 import com.charles.entity.Picture;
 import com.charles.service.GoodsAttrsService;
 import com.charles.service.GoodsService;
 import com.charles.service.PictureService;
+import com.charles.util.IDUtil;
 import com.charles.util.JsonResult;
 import com.charles.util.State;
 import com.charles.vo.GoodsAttrsVO;
 import com.charles.vo.PictureVO;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -115,5 +125,26 @@ public class GoodsController extends BaseController {
     public JsonResult<Void> delete(@PathVariable(value = "id") Integer id) {
         goodsService.delete(id);
         return new JsonResult<>(State.OK);
+    }
+
+    @PostMapping("/upload")
+    public JsonResult<GoodsUploadDto> upload(MultipartFile file) throws IOException {
+        if (file == null) {
+            throw new FileEmptyException("文件空指针异常");
+        }
+        String oldName = file.getOriginalFilename();
+        String newName = IDUtil.getImageName();
+        String datePath = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        assert oldName != null;
+        newName += oldName.substring(oldName.lastIndexOf("."));
+        File dest = new File(new File("vue_shop\\src\\main\\resources\\static\\upload\\goods\\").getAbsolutePath(),datePath);
+        if (!dest.exists()) {
+            dest.mkdirs();
+        }
+        file.transferTo(new File(dest, newName));
+        GoodsUploadDto goodsUploadDto = new GoodsUploadDto();
+        goodsUploadDto.setPath("/upload/goods/" + datePath + "/" + newName);
+        goodsUploadDto.setUrl("http://localhost:90/upload/goods/" + datePath + "/" + newName);
+        return new JsonResult<>(State.OK, goodsUploadDto);
     }
 }

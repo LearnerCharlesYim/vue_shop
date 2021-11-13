@@ -17,4 +17,8 @@ public interface CategoryService {
 
     CategoryDto findOne(int id);
 
+    List<CategoryDto> getExcludeLevel3();
+
+    List<CategoryDto> findAll();
+
 }

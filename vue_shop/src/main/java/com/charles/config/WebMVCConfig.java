@@ -7,7 +7,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.FormContentFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import java.io.File;
 
 
 @Configuration
@@ -33,5 +36,15 @@ public class WebMVCConfig extends WebMvcConfigurationSupport {
     @Bean
     public FormContentFilter httpPutFormContentFilter(){
         return new FormContentFilter();
+    }
+
+
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+        String absolutePath = new File("vue_shop\\src\\main\\resources\\static\\upload\\").getAbsolutePath();
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:"+absolutePath + "\\");
+        super.addResourceHandlers(registry);
     }
 }

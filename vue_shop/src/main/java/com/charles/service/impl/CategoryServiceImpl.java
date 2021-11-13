@@ -7,6 +7,7 @@ import com.charles.entity.QCategory;
 import com.charles.mapper.CategoryMapper;
 import com.charles.repository.CategoryRepository;
 import com.charles.service.CategoryService;
+import com.charles.util.CategoryUtil;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.Modifying;
@@ -75,4 +76,26 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.INSTANCES.toCategoryDto(category);
     }
 
+    @Override
+    public List<CategoryDto> getExcludeLevel3() {
+        List<Category> categories = categoryRepository.findByLevel(1);
+        List<Category> categoryList = CategoryUtil.getCategory(categories);
+        List<CategoryDto> cate = new ArrayList<>();
+        categoryList.forEach(category -> {
+            CategoryDto categoryDto = CategoryMapper.INSTANCES.toCategoryDto(category);
+            cate.add(categoryDto);
+        });
+        return cate;
+    }
+
+    @Override
+    public List<CategoryDto> findAll() {
+        List<Category> categories = categoryRepository.findByLevel(1);
+        List<CategoryDto> cate = new ArrayList<>();
+        categories.forEach(category -> {
+            CategoryDto categoryDto = CategoryMapper.INSTANCES.toCategoryDto(category);
+            cate.add(categoryDto);
+        });
+        return cate;
+    }
 }

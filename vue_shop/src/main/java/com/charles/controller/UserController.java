@@ -6,6 +6,7 @@ import com.charles.entity.SysUser;
 import com.charles.service.SysUserService;
 import com.charles.util.JsonResult;
 import com.charles.util.State;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,6 +17,9 @@ public class UserController {
 
     @Resource
     private SysUserService sysUserService;
+
+    @Resource
+    private RedisTemplate<String,String> redisTemplate;
 
     @GetMapping("/list")
     public JsonResult<UserListDto> list(SysUser user,
@@ -63,5 +67,4 @@ public class UserController {
         UserDto userDto = sysUserService.setRole(id, roleId);
         return new JsonResult<>(State.OK, userDto);
     }
-
 }

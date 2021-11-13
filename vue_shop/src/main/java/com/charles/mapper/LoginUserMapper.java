@@ -16,7 +16,7 @@ public interface LoginUserMapper {
     @Mappings({
             @Mapping(source = "id", target = "id"),
             @Mapping(source = "username", target = "username"),
-            @Mapping(source = "role.id", target = "roleId"),
+            @Mapping(source = "role.roleName", target = "roleName"),
             @Mapping(source = "phone",target = "phone"),
             @Mapping(source = "email",target = "email")
     })

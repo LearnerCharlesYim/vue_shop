@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,31 +30,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserDetailsService userDetailsService;
 
-    //匿名用户访问无权限资源时的异常
+    // 匿名用户访问无权限资源时的异常
     @Resource
     private CustomizeAuthenticationEntryPoint authenticationEntryPoint;
 
-    //登录成功处理逻辑
+    // 登录成功处理逻辑
     @Resource
     private CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
 
-    //登录失败处理逻辑
+    // 登录失败处理逻辑
     @Resource
     private CustomizeAuthenticationFailureHandler authenticationFailureHandler;
 
-    //登出成功处理逻辑
+    // 登出成功处理逻辑
     @Resource
     private CustomizeLogoutSuccessHandler logoutSuccessHandler;
 
-    //会话失效(账号被挤下线)处理逻辑
+    // 会话失效(账号被挤下线)处理逻辑
     @Resource
     private CustomizeSessionInformationExpiredStrategy customizeSessionInformationExpiredStrategy;
 
-    //实现权限拦截
+    // 实现权限拦截
     @Resource
     private CustomizeSecurityMetadataSource customizeSecurityMetadataSource;
 
-    //访问决策管理器
+    // 访问决策管理器
     @Resource
     private CustomizeAccessDecisionManager customizeAccessDecisionManager;
 
@@ -61,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private CustomizeAbstractSecurityInterceptor customizeSecurityInterceptor;
 
+    // 权限异常处理器
     @Resource
     private CustomizeAccessDeniedHandler customizeAccessDeniedHandler;
 
@@ -68,6 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //配置认证方式等
         auth.userDetailsService(userDetailsService);
+    }
+
+    // 放行静态资源
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/upload/**","/js/**");
     }
 
     @Override

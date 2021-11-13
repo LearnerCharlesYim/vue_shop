@@ -45,4 +45,17 @@ public class CategoryParam extends BaseEntity {
     public void setTag(String tag) {
         this.tag = tag;
     }
+
+    @Override
+    public String toString() {
+        return "CategoryParam{" +
+                "id=" + id +
+                ", createdTime=" + createdTime +
+                ", modifiedTime=" + modifiedTime +
+                ", deleted=" + deleted +
+                ", param='" + param + '\'' +
+                ", isStatic=" + isStatic +
+                ", tag='" + tag + '\'' +
+                '}';
+    }
 }

@@ -6,11 +6,11 @@ import com.charles.entity.CategoryParam;
 import java.util.List;
 
 public interface CategoryParamService {
-    CategoryParamDto save(CategoryParam categoryParam, Integer cid);
+    CategoryParamDto save(CategoryParam categoryParam, String sel, Integer cid);
 
     void delete(Integer cid);
 
-    List<CategoryParamDto> findByCondition(CategoryParam categoryParam,Integer cid);
+    List<CategoryParamDto> findByCondition(String sel, Integer cid);
 
     CategoryParamDto findOne(Integer paramId);
 

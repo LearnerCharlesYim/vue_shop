@@ -8,11 +8,14 @@ import com.charles.entity.Permission;
 import com.charles.service.PermissionService;
 import com.charles.util.JsonResult;
 import com.charles.util.State;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +47,6 @@ public class PermissionController {
             MenuDto menuDto = MenuMapper.INSTANCES.toMenuDto(menu);
             list.add(menuDto);
         }
-
         return new JsonResult<>(State.OK,list);
     }
 }

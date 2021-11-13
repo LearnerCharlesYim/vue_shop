@@ -1,5 +1,6 @@
 package com.charles.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class MenuDto {
     private String authName;
     private String path;
     private Integer priority;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<MenuDto> children;
 
     public Integer getId() {

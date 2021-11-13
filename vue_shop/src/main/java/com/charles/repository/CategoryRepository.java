@@ -13,4 +13,6 @@ public interface CategoryRepository extends JpaRepository<Category,Integer>{
 
     @Query(value = "select count(*) from category where level = 1",nativeQuery = true)
     Integer getCountByLevel();
+
+    List<Category> findByLevel(Integer level);
 }

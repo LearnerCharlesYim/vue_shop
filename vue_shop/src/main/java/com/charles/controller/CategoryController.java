@@ -25,70 +25,83 @@ public class CategoryController extends BaseController {
     private CategoryParamService categoryParamService;
 
     @GetMapping("/list")
-    public JsonResult<CategoryListDto> list(@RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
-                                            @RequestParam(value = "pageSize",defaultValue = "5") int pageSize) {
+    public JsonResult<CategoryListDto> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
         CategoryListDto categoryListDto = categoryService.findAllByPage(pageNum, pageSize);
-        return new JsonResult<>(State.OK,categoryListDto);
+        return new JsonResult<>(State.OK, categoryListDto);
+    }
+
+    @GetMapping("/listAll")
+    public JsonResult<List<CategoryDto>> listAll() {
+        List<CategoryDto> categoryDtos = categoryService.findAll();
+        return new JsonResult<>(State.OK, categoryDtos);
     }
 
     @PostMapping("/add")
-    public JsonResult<CategoryDto> add(Category category){
+    public JsonResult<CategoryDto> add(Category category) {
         CategoryDto categoryDto = categoryService.save(category);
-        return new JsonResult<>(State.CREATED,categoryDto);
+        return new JsonResult<>(State.CREATED, categoryDto);
     }
 
     @GetMapping("/{id}")
-    public JsonResult<CategoryDto> findOne(@PathVariable(value = "id") int id){
+    public JsonResult<CategoryDto> findOne(@PathVariable(value = "id") int id) {
         CategoryDto categoryDto = categoryService.findOne(id);
-        return new JsonResult<>(State.OK,categoryDto);
+        return new JsonResult<>(State.OK, categoryDto);
     }
 
     @PutMapping("/{id}")
-    public JsonResult<CategoryDto> update(@PathVariable(value = "id") int id,Category category){
+    public JsonResult<CategoryDto> update(@PathVariable(value = "id") int id, Category category) {
         CategoryDto categoryDto = categoryService.update(category);
-        return new JsonResult<>(State.OK,categoryDto);
+        return new JsonResult<>(State.OK, categoryDto);
     }
 
     @DeleteMapping("/{id}")
-    public JsonResult<Void> delete(@PathVariable(value = "id") int id){
+    public JsonResult<Void> delete(@PathVariable(value = "id") int id) {
         categoryService.delete(id);
         return new JsonResult<>(State.OK);
     }
 
     @GetMapping("/{id}/attributes")
-    public JsonResult<List<CategoryParamDto>> list(@PathVariable(value = "id")  Integer cid,
-                                                   CategoryParam categoryParam){
+    public JsonResult<List<CategoryParamDto>> list(@PathVariable(value = "id") Integer cid,
+                                                   String sel) {
 
-        List<CategoryParamDto> params = categoryParamService.findByCondition(categoryParam,cid);
-        return new JsonResult<>(State.OK,params);
+        List<CategoryParamDto> params = categoryParamService.findByCondition(sel, cid);
+        return new JsonResult<>(State.OK, params);
     }
 
     @PostMapping("/{id}/attributes")
-    public JsonResult<CategoryParamDto> add(@PathVariable(value = "id") Integer cid, CategoryParam categoryParam){
-        CategoryParamDto param = categoryParamService.save(categoryParam,cid);
-        return new JsonResult<>(State.CREATED,param);
+    public JsonResult<CategoryParamDto> add(@PathVariable(value = "id") Integer cid, String sel, CategoryParam categoryParam) {
+        CategoryParamDto param = categoryParamService.save(categoryParam, sel, cid);
+        return new JsonResult<>(State.CREATED, param);
     }
 
     @DeleteMapping("/{id}/attributes/{paramId}")
     public JsonResult<Void> delete(@PathVariable(value = "id") Integer cid,
-                                   @PathVariable(value = "paramId") Integer paramId){
+                                   @PathVariable(value = "paramId") Integer paramId) {
         categoryParamService.delete(paramId);
         return new JsonResult<>(State.OK);
     }
 
     @GetMapping("/{id}/attributes/{paramId}")
     public JsonResult<CategoryParamDto> findOne(@PathVariable(value = "id") Integer cid,
-                                   @PathVariable(value = "paramId") Integer paramId){
+                                                @PathVariable(value = "paramId") Integer paramId) {
         CategoryParamDto param = categoryParamService.findOne(paramId);
-        return new JsonResult<>(State.OK,param);
+        return new JsonResult<>(State.OK, param);
     }
 
     @PutMapping("/{cid}/attributes/{id}")
     public JsonResult<CategoryParamDto> update(@PathVariable(value = "cid") Integer cid,
-                                                @PathVariable(value = "id") Integer id,
-                                               CategoryParam categoryParam){
+                                               @PathVariable(value = "id") Integer id,
+                                               CategoryParam categoryParam) {
         categoryParamService.findOne(id);
         CategoryParamDto param = categoryParamService.update(categoryParam);
-        return new JsonResult<>(State.OK,param);
+        return new JsonResult<>(State.OK, param);
     }
+
+    @GetMapping("/tree")
+    public JsonResult<List<CategoryDto>> tree() {
+        List<CategoryDto> categoryDtoList = categoryService.getExcludeLevel3();
+        return new JsonResult<>(State.OK, categoryDtoList);
+    }
+
 }

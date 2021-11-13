@@ -1,5 +1,7 @@
 package com.charles.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.List;
 
 public class CategoryDto {
@@ -8,6 +10,7 @@ public class CategoryDto {
     private Integer parentId;
     private Integer level;
     private Boolean state;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CategoryDto> children;
 
     public Integer getId() {

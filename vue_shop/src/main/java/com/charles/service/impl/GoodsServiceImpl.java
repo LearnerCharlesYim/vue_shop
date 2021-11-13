@@ -60,6 +60,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsListDto.setGoods(list);
         goodsListDto.setPageNum(pageNum);
         goodsListDto.setPageSize(pageSize);
+        goodsListDto.setTotalNum(totalCount);
         goodsListDto.setTotalPage(
                 (int) (totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1))
         );

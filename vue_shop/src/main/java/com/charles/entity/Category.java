@@ -7,7 +7,7 @@ import java.util.List;
 public class Category extends BaseEntity{
     private String name;
     private Integer level;
-    private Boolean state;
+    private Boolean state = true;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="parent_id",insertable = false,updatable = false)

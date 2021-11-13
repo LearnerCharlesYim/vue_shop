@@ -9,7 +9,6 @@ import com.charles.repository.CategoryParamRepository;
 import com.charles.repository.CategoryRepository;
 import com.charles.service.CategoryParamService;
 import com.charles.service.ex.ParamNotFoundException;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +33,13 @@ public class CategoryParamServiceImpl implements CategoryParamService {
     private JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public CategoryParamDto save(CategoryParam categoryParam, Integer cid) {
+    public CategoryParamDto save(CategoryParam categoryParam, String sel, Integer cid) {
         Category category = categoryRepository.getOne(cid);
+        if (sel.equals("dynamic")) {
+            categoryParam.setIsStatic(false);
+        } else if (sel.equals("static")) {
+            categoryParam.setIsStatic(true);
+        }
         categoryParam.setId(-1);
         categoryParam.setCate(category);
         CategoryParam param = categoryParamRepository.save(categoryParam);
@@ -50,16 +53,14 @@ public class CategoryParamServiceImpl implements CategoryParamService {
     }
 
     @Override
-    public List<CategoryParamDto> findByCondition(CategoryParam categoryParam, Integer cid) {
-        QCategoryParam p = QCategoryParam.categoryParam;
-        JPAQuery<CategoryParam> query = jpaQueryFactory.select(p).from(p);
-        if (!StringUtils.isEmpty(categoryParam.getIsStatic()) && categoryParam.getIsStatic() != null) {
-            query.where(p.isStatic.eq(categoryParam.getIsStatic()));
+    public List<CategoryParamDto> findByCondition(String sel, Integer cid) {
+        Category category = categoryRepository.getOne(cid);
+        List<CategoryParam> categoryParams = new ArrayList<>();
+        if (sel.equals("dynamic")) {
+            categoryParams = categoryParamRepository.findByIsStaticAndCateOrderByCreatedTimeDesc(false, category);
+        } else if (sel.equals("static")) {
+            categoryParams = categoryParamRepository.findByIsStaticAndCateOrderByCreatedTimeDesc(true, category);
         }
-        if (cid != null) {
-            query.where(p.cate.id.eq(cid));
-        }
-        List<CategoryParam> categoryParams = query.fetch();
         List<CategoryParamDto> categoryParamDtos = new ArrayList<>();
         for (CategoryParam item : categoryParams) {
             categoryParamDtos.add(CategoryParamMapper.INSTANCES.toCategoryParamDto(item));
@@ -86,9 +87,7 @@ public class CategoryParamServiceImpl implements CategoryParamService {
         if (!StringUtils.isEmpty(categoryParam.getParam())) {
             update.set(p.param, categoryParam.getParam());
         }
-        if(!StringUtils.isEmpty(categoryParam.getTag())){
-            update.set(p.tag,categoryParam.getTag());
-        }
+        update.set(p.tag, categoryParam.getTag() == null?"":categoryParam.getTag());
         update.where(p.id.eq(categoryParam.getId())).execute();
         CategoryParam param = categoryParamRepository.getOne(categoryParam.getId());
         return CategoryParamMapper.INSTANCES.toCategoryParamDto(param);

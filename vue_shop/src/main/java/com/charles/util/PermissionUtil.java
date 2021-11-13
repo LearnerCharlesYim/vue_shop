@@ -40,7 +40,7 @@ public class PermissionUtil {
                 if (permission.getChildren().isEmpty()) {
                     Integer id = permission.getId();
                     if (!ids.contains(id)) {
-                        System.out.println(permissions.remove(permission));
+                        permissions.remove(permission);
                         i--;
                     }
                 } else {
