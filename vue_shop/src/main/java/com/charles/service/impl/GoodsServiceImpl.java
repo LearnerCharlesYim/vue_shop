@@ -82,7 +82,6 @@ public class GoodsServiceImpl implements GoodsService {
             Category category = categoryRepository.getOne(Integer.parseInt(s));
             categories.add(category);
         }
-
         goods.setCategories(categories);
         goods.setPictures(pictureList);
         goods.setGoodsAttrs(goodsAttrsList);

@@ -78,7 +78,6 @@ public class GoodsController extends BaseController {
                 goodsAttrsList.add(goodsAttrs);
             }
         }
-
         Goods result = goodsService.save(goods, pictureList, goodsAttrsList, categoryIds);
         return new JsonResult<>(State.CREATED, result);
     }

@@ -14,4 +14,11 @@ public class GoodsAttrsVO {
     public void setAttrs(List<GoodsAttrs> attrs) {
         this.attrs = attrs;
     }
+
+    @Override
+    public String toString() {
+        return "GoodsAttrsVO{" +
+                "attrs=" + attrs +
+                '}';
+    }
 }

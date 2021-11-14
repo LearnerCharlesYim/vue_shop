@@ -57,4 +57,14 @@ public class Picture {
     public void setGoods(Goods goods) {
         this.goods = goods;
     }
+
+    @Override
+    public String toString() {
+        return "Picture{" +
+                "picId=" + picId +
+                ", picBig='" + picBig + '\'' +
+                ", picMid='" + picMid + '\'' +
+                ", picSma='" + picSma + '\'' +
+                '}';
+    }
 }

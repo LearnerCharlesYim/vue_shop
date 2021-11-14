@@ -13,7 +13,6 @@ public class GoodsAttrs {
     private Integer addPrice;
     private String attrName;
     private Boolean attrStatic;
-    private String attrTag;
 
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
@@ -60,20 +59,23 @@ public class GoodsAttrs {
         this.attrStatic = attrStatic;
     }
 
-    public String getAttrTag() {
-        return attrTag;
-    }
-
-    public void setAttrTag(String attrTag) {
-        this.attrTag = attrTag;
-    }
-
     public Goods get_goods() {
         return _goods;
     }
 
     public void set_goods(Goods _goods) {
         this._goods = _goods;
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsAttrs{" +
+                "attrId=" + attrId +
+                ", attrValue='" + attrValue + '\'' +
+                ", addPrice=" + addPrice +
+                ", attrName='" + attrName + '\'' +
+                ", attrStatic=" + attrStatic +
+                '}';
     }
 }
 

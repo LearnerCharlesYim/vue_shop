@@ -14,4 +14,11 @@ public class PictureVO {
     public void setPics(List<Picture> pics) {
         this.pics = pics;
     }
+
+    @Override
+    public String toString() {
+        return "PictureVO{" +
+                "pics=" + pics +
+                '}';
+    }
 }

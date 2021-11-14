@@ -107,5 +107,15 @@ public class Goods extends BaseEntity{
         this.introduction = introduction;
     }
 
-
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", weight=" + weight +
+                ", state=" + state +
+                ", num=" + num +
+                ", introduction='" + introduction + '\'' +
+                '}';
+    }
 }
